@@ -56,15 +56,15 @@ def GroupMailer(df):
 			if 'email' in u.keys():
 				userEmails.append(u['email'])
 	userEmails = list(dict.fromkeys(userEmails))
-	emailer(userEmails,df,'group')
+	emailer(userEmails,df)
 	return df
 	
 def PersonMailer(df):
 	userEmails = df['EmailList']
-	emailer(userEmails,df,'person')
+	emailer(userEmails,df)
 	return df
 	
-def emailer(mailList, frame, distro_type):
+def emailer(mailList, frame):
 	attachment_filename = frame['File Name'][0]
 	buffer = io.StringIO(pd.DataFrame.to_csv(frame))
 	msg = MIMEMultipart()
@@ -73,7 +73,7 @@ def emailer(mailList, frame, distro_type):
 	print(type(receiver_email))
 	msg['From'] = sender_email
 	msg['To'] = receiver_email
-	msg['Subject'] = attachment_filename + distro_type +  ' Distribution from Tableau'
+	msg['Subject'] = attachment_filename +  ' Distribution from Tableau'
 	body = 'Congrats on your report!'
 	msg.attach(MIMEText(body,'plain'))
 	attachment = buffer
